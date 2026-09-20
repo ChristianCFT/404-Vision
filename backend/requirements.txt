@@ -1,5 +1,3 @@
-ultralytics
-opencv-python
-numpy
-pandas
-requests
+flask>=3.0
+requests>=2.31
+ultralytics>=8.3

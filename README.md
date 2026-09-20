@@ -23,3 +23,11 @@ O sistema recebe uma imagem da sala de aula. A detecção é realizada utilizand
 Essa quantidade será utilizada como uma das informações para a estimativa da temperatura interna, juntamente com a temperatura externa obtida através da API Open-Meteo.
 
 A partir dessas informações, será realizado um cálculo para obter uma estimativa da temperatura da sala, que poderá ser utilizada para determinar o funcionamento do ar-condicionado.
+
+## Como testar
+
+cd 404-Vision
+
+pip install -r backend/requirements.txt
+
+python main.py          abra http://localhost:8000

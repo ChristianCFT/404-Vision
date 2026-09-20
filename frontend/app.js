@@ -274,7 +274,7 @@
       if (!el.img.getAttribute('src')) { // só avisa se ainda não há nenhuma imagem na tela
         el.empty.hidden = false;
         el.empty.firstElementChild.textContent = state.mode === 'demo'
-          ? `Não encontrei a imagem de demonstração (${url.split('/').pop()}). Confira se a pasta frontend/assets/demo existe.`
+          ? `Não encontrei a imagem de demonstração (${url.split('/').pop().split('?')[0]}). Ela vem da base em data/images, servida pelo backend — confira se o "python main.py" está rodando.`
           : 'Não foi possível carregar a imagem da câmera. Confira a rota de imagem do backend.';
       }
     };
