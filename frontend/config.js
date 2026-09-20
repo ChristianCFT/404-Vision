@@ -43,5 +43,19 @@ window.VISION_CONFIG = {
     { file: 'assets/demo/sala_56p.jpg', count: 56 },
     { file: 'assets/demo/sala_62p.jpg', count: 62 }
   ],
-  demoCycleMs: 5000
+  demoCycleMs: 5000,
+
+  // Modo WebCam: a detecção roda no próprio navegador (TensorFlow.js + COCO-SSD).
+  // Precisa de internet na primeira vez para baixar o modelo (~10 MB).
+  webcam: {
+    tfUrl: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js',
+    modelUrl: 'https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js',
+    modelBase: 'lite_mobilenet_v2', // 'lite_mobilenet_v2' (rápido) | 'mobilenet_v2' (mais preciso, mais pesado)
+    minScore: 0.55,   // confiança mínima inicial (o modelo não aceita menos que 0.5)
+    smoothing: 7,     // nº de leituras usadas na mediana, evita a contagem "piscar"
+    capacity: 10,     // lugares da "sala" no teste (notebook costuma ver poucas pessoas)
+    outdoor: 25,      // temperatura externa inicial (°C)
+    k: 0.4,           // fator K inicial, maior que o da demo para reagir a poucas pessoas
+    mirror: true      // imagem espelhada, como uma câmera frontal
+  }
 };

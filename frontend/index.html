@@ -40,6 +40,7 @@
     <div class="segmented" role="group" aria-label="Fonte dos dados">
       <button type="button" data-mode="demo" aria-pressed="true">Demonstração</button>
       <button type="button" data-mode="api" aria-pressed="false">Backend</button>
+      <button type="button" data-mode="webcam" aria-pressed="false">WebCam</button>
     </div>
   </div>
 </header>
@@ -53,6 +54,7 @@
     <section class="camera" aria-label="Imagem da câmera">
       <figure class="frame" id="frame">
         <img id="camImg" alt="Imagem ao vivo da câmera da sala" decoding="async">
+        <video id="camVideo" autoplay muted playsinline hidden aria-label="Imagem ao vivo da webcam"></video>
         <canvas id="boxes"></canvas>
         <div class="sweep" aria-hidden="true"></div>
 
@@ -65,8 +67,12 @@
           <strong id="camCount">0</strong>
           <span id="camCountLabel">pessoas detectadas</span>
         </div>
+        <div class="wc-loading" id="wcLoading" hidden role="status">
+          <i class="spin" aria-hidden="true"></i><span id="wcLoadingText">Abrindo a câmera…</span>
+        </div>
         <div class="empty" id="camEmpty">
           <p>Aguardando a primeira imagem da câmera.</p>
+          <button type="button" class="btn" id="camAction" hidden>Tentar de novo</button>
         </div>
         <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
       </figure>
@@ -183,6 +189,44 @@
   </label>
 
   <button type="button" class="btn" id="demoPlay" aria-pressed="true">Pausar ciclo</button>
+</section>
+
+<!-- Controles do modo WebCam -->
+<section class="demo" id="webcamBar" aria-label="Controles da WebCam" hidden>
+  <div class="demo-title">
+    <h3>WebCam · teste ao vivo</h3>
+    <p>Conta as pessoas pela câmera do notebook, direto no navegador. Os ares são simulados a partir da demanda.</p>
+  </div>
+
+  <label class="demo-field" id="wcDeviceField" hidden>
+    <span>Câmera</span>
+    <select id="wcDevice"></select>
+  </label>
+
+  <label class="demo-field">
+    <span>Temp. externa (°C)</span>
+    <input type="number" id="wcOutdoor" min="0" max="50" step="0.5" value="25">
+  </label>
+
+  <label class="demo-field">
+    <span>Fator K (°C/pessoa)</span>
+    <input type="number" id="wcK" min="0" max="1" step="0.01" value="0.4">
+  </label>
+
+  <label class="demo-field">
+    <span>Capacidade (lugares)</span>
+    <input type="number" id="wcCap" min="1" max="500" step="1" value="10">
+  </label>
+
+  <label class="demo-field demo-slider">
+    <span>Confiança mínima <b id="wcScoreLabel">55%</b></span>
+    <input type="range" id="wcScore" min="50" max="90" step="5" value="55">
+  </label>
+
+  <div class="demo-actions">
+    <button type="button" class="btn" id="wcMirror" aria-pressed="true">Espelhar</button>
+    <button type="button" class="btn" id="wcToggle">Parar câmera</button>
+  </div>
 </section>
 
 <footer class="foot">
