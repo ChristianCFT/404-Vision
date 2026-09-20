@@ -10,7 +10,7 @@ A partir da quantidade de pessoas detectadas e de informações climáticas exte
 
 ## 📦 Dependências
 
-- ultralytics
+- ultralytics (YOLO)
 - opencv-python
 - numpy
 - pandas
