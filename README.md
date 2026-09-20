@@ -28,6 +28,10 @@ A partir dessas informações, será realizado um cálculo para obter uma estima
 
 cd 404-Vision
 
+python -m venv .venv (Na pasta do projeto)
+
+source .venv/bin/activate.fish (se usar fish) ou source .venv/bin/activate (se usar bash)
+
 pip install -r backend/requirements.txt
 
-python main.py          abra http://localhost:8000
+python main.py (abra http://localhost:8000)
