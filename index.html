@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Vision · Climatização guiada por câmera</title>
+  <meta name="theme-color" content="#f5f2e9">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315132e'/%3E%3Cpath d='M8 13V8h5M19 8h5v5M24 19v5h-5M13 24H8v-5' stroke='%23ff7a45' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23c026a3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <defs>
+        <linearGradient id="bm" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#2f6bff"/>
+          <stop offset=".5" stop-color="#ffd23f"/>
+          <stop offset="1" stop-color="#e5322d"/>
+        </linearGradient>
+      </defs>
+      <path d="M5 12V5h7M20 5h7v7M27 20v7h-7M12 27H5v-7" fill="none" stroke="url(#bm)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="16" cy="16" r="3.6" fill="url(#bm)"/>
+    </svg>
+    <div>
+      <h1>404 Vision</h1>
+      <p>Climatização de salas guiada por câmera</p>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="status" id="status" role="status">
+      <span class="status-dot"></span>
+      <span id="statusText">Conectando…</span>
+    </div>
+    <div class="segmented" role="group" aria-label="Fonte dos dados">
+      <button type="button" data-mode="demo" aria-pressed="true">Demonstração</button>
+      <button type="button" data-mode="api" aria-pressed="false">Backend</button>
+    </div>
+  </div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<main class="layout">
+
+  <!-- Coluna esquerda: câmera + ocupação -->
+  <div class="col-main">
+    <section class="camera" aria-label="Imagem da câmera">
+      <figure class="frame" id="frame">
+        <img id="camImg" alt="Imagem ao vivo da câmera da sala" decoding="async">
+        <canvas id="boxes"></canvas>
+        <div class="sweep" aria-hidden="true"></div>
+
+        <div class="hud hud-tr">
+          <span class="rec"></span>
+          <span id="camName">Câmera 1</span>
+          <span class="time" id="camTime">--:--:--</span>
+        </div>
+        <div class="hud hud-bl">
+          <strong id="camCount">0</strong>
+          <span id="camCountLabel">pessoas detectadas</span>
+        </div>
+        <div class="empty" id="camEmpty">
+          <p>Aguardando a primeira imagem da câmera.</p>
+        </div>
+        <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+      </figure>
+    </section>
+
+    <section class="occupancy" aria-label="Ocupação da sala">
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#5b6cff"/>
+              <stop offset=".55" stop-color="#d02fa6"/>
+              <stop offset="1" stop-color="#ff8a3d"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="50" pathLength="100"/>
+        </svg>
+        <div class="ring-text">
+          <span class="ring-pct" id="occPct">0<small>%</small></span>
+          <span class="ring-sub">ocupada</span>
+        </div>
+      </div>
+
+      <div class="occ-numbers">
+        <h2>Ocupação da sala</h2>
+        <p class="occ-big"><strong id="occPeople">0</strong> <span>de <b id="occCap">70</b> lugares</span></p>
+        <p class="occ-hint" id="occHint">Sala vazia</p>
+      </div>
+
+      <div class="history">
+        <div class="history-head">
+          <h3>Últimos minutos</h3>
+          <ul class="legend">
+            <li><i class="sw sw-area"></i>Ocupação</li>
+            <li><i class="sw sw-line"></i>Temperatura estimada</li>
+          </ul>
+        </div>
+        <svg id="chart" viewBox="0 0 320 90" preserveAspectRatio="none" role="img" aria-label="Histórico de ocupação e temperatura estimada">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#8f7dff" stop-opacity=".55"/>
+              <stop offset="1" stop-color="#8f7dff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path id="chartArea" fill="url(#areaGrad)"/>
+          <path id="chartLine" fill="none" stroke="#e8731a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- Coluna direita: temperatura + ares -->
+  <aside class="col-side">
+    <section class="temp" aria-label="Temperatura interna">
+      <div class="temp-head">
+        <h2>Temperatura interna</h2>
+        <span class="tag" tabindex="0" title="A câmera RGB não mede temperatura. O valor é uma estimativa a partir da temperatura externa e do número de pessoas.">estimada</span>
+      </div>
+
+      <p class="temp-big"><span id="tempEst">--,-</span><small>°C</small></p>
+
+      <div class="scale" id="scale">
+        <div class="scale-bar"></div>
+        <div class="mark mark-out" id="markOut"><span id="markOutLabel">externa 25 °C</span></div>
+        <div class="mark mark-est" id="markEst"><span id="markEstLabel">estimada</span></div>
+        <div class="scale-ends"><span id="scaleMin">22</span><span id="scaleMax">34</span></div>
+      </div>
+
+      <p class="formula" id="formula">
+        <span>25,0</span> + <span>0</span> × <span>0,1</span> = <span>25,0</span>
+        <em>externa + pessoas × K</em>
+      </p>
+
+      <div class="verdict" id="verdict" data-level="low">
+        <div>
+          <p class="verdict-label">Demanda térmica</p>
+          <p class="verdict-level" id="demandText">Baixa</p>
+        </div>
+        <p class="verdict-rec" id="recText" aria-live="polite">Reduzir climatização</p>
+      </div>
+    </section>
+
+    <section class="acs" aria-label="Aparelhos de ar-condicionado">
+      <div class="acs-head">
+        <h2>Ares-condicionados</h2>
+        <span class="acs-count" id="acsCount">0 ligados</span>
+      </div>
+      <ul class="ac-list" id="acList"></ul>
+    </section>
+  </aside>
+</main>
+
+<!-- Controles da demonstração -->
+<section class="demo" id="demoBar" aria-label="Controles da demonstração">
+  <div class="demo-title">
+    <h3>Simulador</h3>
+    <p>Usa fotos reais da base de dados de salas. Ideal para apresentar sem o backend.</p>
+  </div>
+
+  <label class="demo-field demo-slider">
+    <span>Cena da sala <b id="demoSceneLabel">0 pessoas</b></span>
+    <input type="range" id="demoScene" min="0" max="8" step="1" value="0">
+  </label>
+
+  <label class="demo-field">
+    <span>Temp. externa (°C)</span>
+    <input type="number" id="demoOutdoor" min="0" max="50" step="0.5" value="25">
+  </label>
+
+  <label class="demo-field">
+    <span>Fator K (°C/pessoa)</span>
+    <input type="number" id="demoK" min="0" max="1" step="0.01" value="0.1">
+  </label>
+
+  <button type="button" class="btn" id="demoPlay" aria-pressed="true">Pausar ciclo</button>
+</section>
+
+<footer class="foot">
+  Temperatura calculada por estimativa: T = T<sub>externa</sub> + N<sub>pessoas</sub> × K. Não é uma medição física.
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
