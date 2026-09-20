@@ -8,27 +8,21 @@ O 404-Vision foi desenvolvido com o objetivo de criar um sistema capaz de analis
 
 A partir da quantidade de pessoas detectadas e de informações climáticas externas obtidas por uma API, o sistema poderá estimar a temperatura interna da sala e determinar se o ar-condicionado deve ser ligado ou desligado.
 
-## Dependências
+## 📦 Dependências
 
-ultralytics
-opencv-python
-numpy
-pandas
-requests
+- ultralytics
+- opencv-python
+- numpy
+- pandas
+- requests
 
-O fluxo principal do sistema é:
+## ⚙️ Funcionamento
 
-```text
-Imagem da sala
-      ↓
-Detecção de pessoas (YOLO)
-      ↓
-Quantidade de pessoas
-      ↓
-Temperatura externa (Open-Meteo)
-      ↓
-Estimativa da temperatura interna
-      ↓
-Decisão sobre o ar-condicionado
-      ↓
-Resultado apresentado no Frontend
+O sistema recebe uma imagem da sala de aula. A detecção é realizada utilizando o modelo de inteligência artificial YOLO, que identifica e contabiliza a quantidade de pessoas presentes na imagem.
+
+Essa quantidade será utilizada como uma das informações para a estimativa da temperatura interna, juntamente com a temperatura externa obtida através da API Open-Meteo.
+
+A partir dessas informações, será realizado um cálculo para obter uma estimativa da temperatura da sala, que poderá ser utilizada para determinar o funcionamento do ar-condicionado.
+
+## Instruções básicas de execução
+
