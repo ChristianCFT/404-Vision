@@ -6,7 +6,7 @@ Sistema inteligente para gerenciamento de ambientes de sala de aula, utilizando 
 
 O 404-Vision foi desenvolvido com o objetivo de criar um sistema capaz de analisar imagens de salas de aula e identificar a quantidade de pessoas presentes no ambiente.
 
-A partir da quantidade de pessoas detectadas e de informações climáticas externas obtidas por uma API, o sistema poderá estimar a temperatura interna da sala e determinar se o ar-condicionado deve ser ligado ou desligado.
+A partir da quantidade de pessoas detectadas e de informações climáticas externas obtidas por uma API, o sistema poderá estimar a temperatura interna da sala e determinar se o ar-condicionado deve ser ligado, desligado, aumentado ou diminuido.
 
 ## 📦 Dependências
 
